@@ -1,9 +1,9 @@
-package dialog
+package directives
 
 import "github.com/mcmillan/alexalog/domain"
 
-type DialogConfirmSlot struct {
+type DialogElicitSlot struct {
 	Type          string        `json:"type"`
-	SlotToConfirm string        `json:"slotToConfirm"`
+	SlotToElicit  string        `json:"slotToElicit"`
 	UpdatedIntent domain.Intent `json:"updatedIntent"`
 }

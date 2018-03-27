@@ -1,4 +1,4 @@
-package dialog
+package directives
 
 import "github.com/mcmillan/alexalog/domain"
 
