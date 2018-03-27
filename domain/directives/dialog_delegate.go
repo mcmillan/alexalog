@@ -3,6 +3,6 @@ package directives
 import "github.com/mcmillan/alexalog/domain"
 
 type DialogDelegate struct {
-	Type          string        `json:"type"`
-	UpdatedIntent domain.Intent `json:"updatedIntent`
+	Type          string         `json:"type,omitempty"`
+	UpdatedIntent *domain.Intent `json:"updatedIntent,omitempty"`
 }
