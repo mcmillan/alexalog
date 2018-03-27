@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/mcmillan/alexalog/domain"
+	"github.com/mcmillan/alexalog/shortcuts"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -28,16 +29,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("requestType: %s", requestBody.Request.Type)
 
-	responseBody := domain.ResponseBody{
-		Version: "1.0",
-		Response: &domain.Response{
-			OutputSpeech: &domain.ResponseOutputSpeech{
-				Type: "PlainText",
-				Text: "my roflcopter goes soi soi soi soi soi",
-			},
-			ShouldEndSession: true,
-		},
-	}
+	responseBody := shortcuts.SpeechResponse("hi there!", true)
 
 	resp, err := json.Marshal(responseBody)
 
