@@ -12,21 +12,21 @@ type ResponseCardImage struct {
 }
 
 type ResponseCard struct {
-	Type    string            `json:"type"`
-	Title   string            `json:"title"`
-	Content string            `json:"content"`
-	Text    string            `json:"text"`
-	Image   ResponseCardImage `json:"image"`
+	Type    string             `json:"type"`
+	Title   string             `json:"title"`
+	Content string             `json:"content"`
+	Text    string             `json:"text"`
+	Image   *ResponseCardImage `json:"image"`
 }
 
 type ResponseReprompt struct {
-	OutputSpeech ResponseOutputSpeech `json:"outputSpeech"`
+	OutputSpeech *ResponseOutputSpeech `json:"outputSpeech"`
 }
 
 type Response struct {
-	OutputSpeech     ResponseOutputSpeech `json:"outputSpeech"`
-	Card             ResponseCard         `json:"card"`
-	Reprompt         ResponseReprompt     `json:"reprompt"`
-	ShouldEndSession bool                 `json:"shouldEndSession"`
-	Directives       []interface{}        `json:"directives"`
+	OutputSpeech     *ResponseOutputSpeech `json:"outputSpeech,omitempty"`
+	Card             *ResponseCard         `json:"card,omitempty"`
+	Reprompt         *ResponseReprompt     `json:"reprompt,omitempty"`
+	ShouldEndSession bool                  `json:"shouldEndSession"`
+	Directives       []interface{}         `json:"directives,omitempty"`
 }
