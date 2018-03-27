@@ -27,6 +27,6 @@ type Response struct {
 	OutputSpeech     *ResponseOutputSpeech `json:"outputSpeech,omitempty"`
 	Card             *ResponseCard         `json:"card,omitempty"`
 	Reprompt         *ResponseReprompt     `json:"reprompt,omitempty"`
-	ShouldEndSession bool                  `json:"shouldEndSession"`
+	ShouldEndSession bool                  `json:"shouldEndSession,omitempty"`
 	Directives       []interface{}         `json:"directives,omitempty"`
 }
