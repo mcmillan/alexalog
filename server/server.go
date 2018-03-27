@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -32,14 +33,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if requestBody.Request.Type != "IntentRequest" {
-		http.Error(w, "not intentrequest", 422)
+		err = errors.New("not intentrequest")
+		log.Error(err)
+		http.Error(w, err.Error(), 422)
 		return
 	}
 
 	var intentConfig *config.Intent
 
 	for _, intent := range globalConfig.Intents {
-		if intent.Options.Name != requestBody.Request.Intent.Name {
+		if intent.Name != requestBody.Request.Intent.Name {
 			continue
 		}
 
@@ -47,7 +50,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if intentConfig == nil {
-		http.Error(w, fmt.Sprintf("cannot find intent %s", requestBody.Request.Intent.Name), 422)
+		err = fmt.Errorf("cannot find intent %s", requestBody.Request.Intent.Name)
+		log.Error(err)
+		http.Error(w, err.Error(), 422)
 		return
 	}
 
