@@ -52,6 +52,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseBody := domain.ResponseBody{
+		Version:  "1.0",
 		Response: &domain.Response{},
 	}
 
