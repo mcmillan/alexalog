@@ -8,10 +8,10 @@ type Request struct {
 	Locale    string `json:"locale"`
 
 	// IntentRequest
-	DialogState string `json:"dialogState"`
-	Intent      Intent `json:"intent"`
+	DialogState string  `json:"dialogState"`
+	Intent      *Intent `json:"intent"`
 
 	// SessionEndedRequest
 	Reason string `json:"reason"`
-	Error  Error  `json:"error"`
+	Error  *Error `json:"error"`
 }

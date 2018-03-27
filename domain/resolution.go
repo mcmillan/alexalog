@@ -6,7 +6,7 @@ type ResolutionValueData struct {
 }
 
 type ResolutionValue struct {
-	Value ResolutionValueData `json:"value"`
+	Value *ResolutionValueData `json:"value"`
 }
 
 type ResolutionStatus struct {
@@ -14,11 +14,11 @@ type ResolutionStatus struct {
 }
 
 type Resolution struct {
-	Authority string            `json:"authority"`
-	Status    ResolutionStatus  `json:"status"`
-	Values    []ResolutionValue `json:"values"`
+	Authority string             `json:"authority"`
+	Status    *ResolutionStatus  `json:"status"`
+	Values    []*ResolutionValue `json:"values"`
 }
 
 type Resolutions struct {
-	ResolutionsPerAuthority []Resolution `json:"resolutionsPerAuthority"`
+	ResolutionsPerAuthority []*Resolution `json:"resolutionsPerAuthority"`
 }
