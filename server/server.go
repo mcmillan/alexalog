@@ -2,17 +2,33 @@ package server
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 
 	"github.com/mcmillan/alexalog/config"
 	"github.com/mcmillan/alexalog/domain"
 	"github.com/mcmillan/alexalog/domain/directives"
+	"github.com/mcmillan/alexalog/shortcuts"
 	log "github.com/sirupsen/logrus"
 )
 
 var globalConfig *config.Config
+
+func handleError(w http.ResponseWriter, err error) {
+	log.Error(err)
+
+	response := domain.ResponseBody{
+		Version:  "1.0",
+		Response: shortcuts.SpeechResponse(fmt.Sprintf("Something went wrong: %s", err.Error())),
+	}
+
+	err = json.NewEncoder(w).Encode(response)
+
+	if err != nil {
+		log.Error(err)
+		http.Error(w, "internal server error", 500)
+	}
+}
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("%s %s", r.Method, r.RequestURI)
@@ -27,15 +43,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&requestBody)
 
 	if err != nil {
-		log.Error(err)
-		http.Error(w, err.Error(), 500)
 		return
 	}
 
 	if requestBody.Request.Type != "IntentRequest" {
-		err = errors.New("not intentrequest")
-		log.Error(err)
-		http.Error(w, err.Error(), 422)
+		http.Error(w, "not intentrequest", 422)
 		return
 	}
 
@@ -51,8 +63,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	if intentConfig == nil {
 		err = fmt.Errorf("cannot find intent %s", requestBody.Request.Intent.Name)
-		log.Error(err)
-		http.Error(w, err.Error(), 422)
+		handleError(w, err)
 		return
 	}
 
@@ -64,8 +75,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if requestBody.Request.DialogState == "STARTED" {
 		err := intentConfig.OnStart(requestBody.Request.Intent)
 		if err != nil {
-			log.Error(err)
-			http.Error(w, err.Error(), 500)
+			handleError(w, err)
 			return
 		}
 		responseBody.Response.Directives = []interface{}{
@@ -81,8 +91,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		response, err := intentConfig.OnComplete(requestBody.Request.Intent)
 		if err != nil {
-			log.Error(err)
-			http.Error(w, err.Error(), 500)
+			handleError(w, err)
 			return
 		}
 		responseBody.Response = response
@@ -91,8 +100,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	resp, err := json.Marshal(responseBody)
 
 	if err != nil {
-		log.Error(err)
-		http.Error(w, err.Error(), 500)
+		handleError(w, err)
 		return
 	}
 
