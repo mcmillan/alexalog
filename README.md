@@ -1,4 +1,8 @@
-:rotating_light: **EXTRA JANK!** - DO NOT USE! :rotating_light:
+<p align="center">
+  :rotating_light: :rotating_light: :rotating_light:
+  <b>EXTRA JANK - DO NOT USE!</b>
+  :rotating_light: :rotating_light: :rotating_light:
+</p>
 
 ---
 
